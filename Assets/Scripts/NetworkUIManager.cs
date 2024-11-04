@@ -2,10 +2,11 @@ using UnityEngine;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.UI;
+using TMPro;
 
 public class NetworkUIManager : MonoBehaviour
 {
-    public InputField ipAddressInput; // Assign your IP address input field here in the Inspector.
+    public TMP_InputField ipAddressInput; // Assign your IP address input field here in the Inspector.
     public Button hostButton;         // Assign your Host button here in the Inspector.
     public Button joinButton;         // Assign your Join button here in the Inspector.
 
