@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 [RequireComponent(typeof(CharacterController))]
 
-public class CowMovement : MonoBehaviour, IPlayerMovement
+public class CowMovement : NetworkBehaviour, IPlayerMovement
 {
     public Camera playerCamera;
     public float walkSpeed = 6f;
@@ -31,6 +32,7 @@ public class CowMovement : MonoBehaviour, IPlayerMovement
 
     void Update()
     {
+        if (!IsLocalPlayer) return;
         if (!canMove) return;
 
         Vector3 forward = transform.TransformDirection(Vector3.forward);

@@ -1,4 +1,0 @@
-repository "Scene1_3DUI@Davidson@cloud"
-  path "/"
-    br "/main"
-    co "/main"
