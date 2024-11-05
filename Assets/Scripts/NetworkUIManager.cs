@@ -6,6 +6,7 @@ public class NetworkUIManager : MonoBehaviour
 {
     public Button hostButton;
     public Button joinButton;
+    public GameObject canvas;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class NetworkUIManager : MonoBehaviour
         // Start hosting
         NetworkManager.Singleton.StartHost();
         Debug.Log("Hosting Game");
+        canvas.SetActive(false);
     }
 
     private void JoinGame()
@@ -26,5 +28,6 @@ public class NetworkUIManager : MonoBehaviour
         // Start client
         NetworkManager.Singleton.StartClient();
         Debug.Log("Joining Game");
+        canvas.SetActive(false);
     }
 }
