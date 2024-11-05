@@ -1,6 +1,8 @@
-using Unity.Netcode;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine.UI;
+using TMPro;
 
 public class NetworkUIManager : MonoBehaviour
 {
@@ -10,22 +12,24 @@ public class NetworkUIManager : MonoBehaviour
 
     private void Start()
     {
-        // Set up button listeners
+        // Attach button click listeners
         hostButton.onClick.AddListener(HostGame);
         joinButton.onClick.AddListener(JoinGame);
     }
 
-    private void HostGame()
+    public void HostGame()
     {
-        // Start hosting
         NetworkManager.Singleton.StartHost();
         Debug.Log("Hosting Game");
         canvas.SetActive(false);
     }
 
-    private void JoinGame()
+    public void JoinGame()
     {
-        // Start client
+        // Set the IP address entered in the InputField for the client connection
+        var unityTransport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
+        unityTransport.ConnectionData.Port = 7777; // Ensure this matches the port set in UnityTransport for the host
+
         NetworkManager.Singleton.StartClient();
         Debug.Log("Joining Game");
         canvas.SetActive(false);
