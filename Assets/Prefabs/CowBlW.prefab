@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 2428268010280944469}
   - component: {fileID: 3545428118885126263}
   - component: {fileID: 1617864888089003167}
-  - component: {fileID: 4960595309828802498}
+  - component: {fileID: 1430550558965907015}
+  - component: {fileID: 4935896651884067158}
   m_Layer: 0
   m_Name: CowBlW
   m_TagString: Player
@@ -156,7 +157,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &4960595309828802498
+--- !u!114 &1430550558965907015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,19 +166,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 4877602396134897958}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b2582f8fb7b428d96cbfce981fb651, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b2dabb42466e4cab85076936fde8af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2772933494929515135}
   walkSpeed: 6
-  runSpeed: 9
-  jumpPower: 3
+  runSpeed: 12
+  jumpPower: 7
   gravity: 10
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
   crouchHeight: 1
   crouchSpeed: 3
+--- !u!114 &4935896651884067158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877602396134897958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &5363184735938570952
 GameObject:
   m_ObjectHideFlags: 0

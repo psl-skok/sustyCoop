@@ -28,10 +28,12 @@ public class NetworkUIManager : MonoBehaviour
     {
         // Set the IP address entered in the InputField for the client connection
         var unityTransport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
+        unityTransport.ConnectionData.Address = "127.0.0.1";
         unityTransport.ConnectionData.Port = 7777; // Ensure this matches the port set in UnityTransport for the host
 
         NetworkManager.Singleton.StartClient();
         Debug.Log("Joining Game");
         canvas.SetActive(false);
     }
+    
 }
