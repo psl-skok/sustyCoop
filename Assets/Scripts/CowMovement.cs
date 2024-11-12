@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 [RequireComponent(typeof(CharacterController))]
 
-public class CowMovement : MonoBehaviour, IPlayerMovement
+public class CowMovement : NetworkBehaviour
 {
     public Camera playerCamera;
     public float walkSpeed = 6f;
@@ -19,8 +20,7 @@ public class CowMovement : MonoBehaviour, IPlayerMovement
     private float rotationX = 0;
     private CharacterController characterController;
 
-    // Implementing the IPlayerMovement interface
-    public bool canMove { get; set; } = true;  // Default value can be true or false based on your logic
+    private bool canMove = true; // Set default value directly in the script
 
     void Start()
     {
@@ -32,6 +32,11 @@ public class CowMovement : MonoBehaviour, IPlayerMovement
     void Update()
     {
         if (!canMove) return;
+        if (!IsOwner){
+            Debug.Log("Not the owner");
+            playerCamera.gameObject.SetActive(false);
+            return;
+        } 
 
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -40,7 +45,7 @@ public class CowMovement : MonoBehaviour, IPlayerMovement
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
+        
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;

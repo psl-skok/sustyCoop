@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 [RequireComponent(typeof(CharacterController))]
 
-public class ChickenMovement : MonoBehaviour, IPlayerMovement
+public class ChickenMovement : NetworkBehaviour
 {
     public Camera playerCamera;
     public float walkSpeed = 6f;
@@ -19,8 +20,7 @@ public class ChickenMovement : MonoBehaviour, IPlayerMovement
     private float rotationX = 0;
     private CharacterController characterController;
 
-    // Implementing the IPlayerMovement interface
-    public bool canMove { get; set; } = true;  // Default value can be true or false based on your logic
+    private bool canMove = true; // Set default value directly in the script
 
     void Start()
     {
@@ -29,9 +29,25 @@ public class ChickenMovement : MonoBehaviour, IPlayerMovement
         Cursor.visible = false;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        // Only the owner should control this object and have the camera active
+        if (!IsOwner)
+        {
+            playerCamera.gameObject.SetActive(false);
+            enabled = false; // Disable this script for non-owner players
+            return;
+        }
+
+    }
+
     void Update()
     {
         if (!canMove) return;
+
+        Debug.Log("Is Grounded: " + characterController.isGrounded);
+
+
 
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -44,6 +60,7 @@ public class ChickenMovement : MonoBehaviour, IPlayerMovement
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
+            Debug.Log("Attempting to jump");
         }
         else
         {
@@ -76,6 +93,7 @@ public class ChickenMovement : MonoBehaviour, IPlayerMovement
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            Debug.Log("I can move");
         }
     }
 }
