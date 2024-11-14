@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class WasteManager : MonoBehaviour
+public class WasteManager : MonoBehaviour, PlayerBucket
 {
     public GameObject wastePrefab;
     public Transform spawnPoint1;
