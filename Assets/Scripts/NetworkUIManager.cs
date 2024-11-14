@@ -3,6 +3,10 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.UI;
 using TMPro;
+using System.Net;
+using System.Net.Sockets;
+using System.Linq;
+using System.Net.NetworkInformation;
 
 public class NetworkUIManager : MonoBehaviour
 {
@@ -35,5 +39,6 @@ public class NetworkUIManager : MonoBehaviour
         Debug.Log("Joining Game");
         canvas.SetActive(false);
     }
-    
+
+
 }

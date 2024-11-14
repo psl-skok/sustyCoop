@@ -45,7 +45,6 @@ public class ChickenMovement : NetworkBehaviour
     {
         if (!canMove) return;
 
-        Debug.Log("Is Grounded: " + characterController.isGrounded);
 
 
 
@@ -60,7 +59,6 @@ public class ChickenMovement : NetworkBehaviour
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
-            Debug.Log("Attempting to jump");
         }
         else
         {
@@ -93,7 +91,6 @@ public class ChickenMovement : NetworkBehaviour
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-            Debug.Log("I can move");
         }
     }
 }
