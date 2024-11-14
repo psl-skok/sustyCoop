@@ -3,6 +3,10 @@ using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.UI;
 using TMPro;
+using System.Net;
+using System.Net.Sockets;
+using System.Linq;
+using System.Net.NetworkInformation;
 
 public class NetworkUIManager : MonoBehaviour
 {
@@ -28,12 +32,13 @@ public class NetworkUIManager : MonoBehaviour
     {
         // Set the IP address entered in the InputField for the client connection
         var unityTransport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
-        unityTransport.ConnectionData.Address = "127.0.0.1";
+        unityTransport.ConnectionData.Address = "10.52.8.31";
         unityTransport.ConnectionData.Port = 7777; // Ensure this matches the port set in UnityTransport for the host
 
         NetworkManager.Singleton.StartClient();
         Debug.Log("Joining Game");
         canvas.SetActive(false);
     }
-    
+
+
 }
