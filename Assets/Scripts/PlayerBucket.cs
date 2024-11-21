@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class PlayerBucket : MonoBehaviour
 {
     public Transform compostBin1; // Drop-off point
@@ -11,14 +10,34 @@ public class PlayerBucket : MonoBehaviour
     private bool isNearWaste = false;
     private bool isNearTrash = false;
     public Camera playerCamera; // Reference to the player’s camera
-    public GameObject successCanvas;
+    private GameObject successCanvas; // Reference to success canvas (now private, will find it dynamically)
+
+    public static event System.Action<PlayerBucket> OnPlayerBucketCreated;
+
+    void Awake()
+    {
+        OnPlayerBucketCreated?.Invoke(this);
+    }
+
+    // Use OnEnable to ensure the successCanvas is found when the chicken (player) is instantiated
+    void OnEnable()
+    {
+        successCanvas = GameObject.Find("SuccessCanvas"); // Dynamically find the canvas
+        if (successCanvas != null)
+        {
+            successCanvas.SetActive(false); // Hide the success canvas initially
+        }
+        else
+        {
+            Debug.LogError("SuccessCanvas not found in the scene.");
+        }
+    }
 
     void Start()
     {
         // Find the gameObjects by their names in the scene
         compostBin1 = GameObject.Find("CompostBin1Location").transform;
         compostBin2 = GameObject.Find("CompostBin2Location").transform;
-        successCanvas = GameObject.Find("SuccessCanvas");
 
         if (compostBin1 == null || compostBin2 == null)
         {
@@ -59,11 +78,18 @@ public class PlayerBucket : MonoBehaviour
 
     void Update()
     {
-        if(wasteCollected == 1){
-            successCanvas.SetActive(true);
-            wasteCollected--;
+        // Display success canvas when all waste is collected
+        if (wasteCollected == 9)
+        {
+            if (successCanvas != null)
+            {
+                successCanvas.SetActive(true);
+            }
+
+            wasteCollected--;  // Optional: Decrement to allow re-collection or any other logic you want.
             StartCoroutine(HideSuccessMessageAfterTime());
         }
+
         // Check if the player presses 'E' to pick up waste
         if (isNearWaste && Input.GetKeyDown(KeyCode.E))
         {
@@ -98,7 +124,10 @@ public class PlayerBucket : MonoBehaviour
 
     IEnumerator HideSuccessMessageAfterTime()
     {
-        yield return new WaitForSeconds(10f); // Wait for the specified time
-        successCanvas.SetActive(false); // Deactivate the canvas from PlayerBucket
+        yield return new WaitForSeconds(50f); // Wait for the specified time
+        if (successCanvas != null)
+        {
+            successCanvas.SetActive(false); // Deactivate the canvas after a delay
+        }
     }
 }
