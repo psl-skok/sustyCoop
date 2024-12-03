@@ -8,6 +8,8 @@ TagManager:
   - Waste
   - TrashBin
   - Water
+  - Flower
+  - Soil
   layers:
   - Default
   - TransparentFX
