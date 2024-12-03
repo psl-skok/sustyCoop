@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
-    public Material healthyMaterial;
+    /*public Material healthyMaterial;
     public Material wiltedMaterial;
 
     private bool isWilted = false;
@@ -48,5 +48,5 @@ public class Flower : MonoBehaviour
     void OnMouseDown()
     {
         Water(); // Player can click to water the flower
-    }
+    }*/
 }

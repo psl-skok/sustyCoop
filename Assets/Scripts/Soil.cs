@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Soil : MonoBehaviour
 {
-    public GameObject flowerPrefab; // Assign your flower prefab in the Inspector
+    /*public GameObject flowerPrefab; // Assign your flower prefab in the Inspector
     private bool isPlanted = false;
 
     void OnMouseDown()
@@ -24,5 +24,5 @@ public class Soil : MonoBehaviour
     public void ResetSoil()
     {
         isPlanted = false; // Allow replanting if needed
-    }
+    }*/
 }
