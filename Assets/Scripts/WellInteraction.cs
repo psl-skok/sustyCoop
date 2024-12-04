@@ -24,20 +24,12 @@ public class WellInteraction : MonoBehaviour
         // Check if the player is nearby and presses the interact key (e.g., "E")
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && isWaterDirty == false)
         {
-            ToggleInfoCanvas();
+            infoCanvas.SetActive(true);
         }
         else if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && isWaterDirty == true)
         {
             warningCanvas.SetActive(true);
         }
-    }
-
-    private void ToggleInfoCanvas()
-    {
-        // Toggle the visibility of the text panel
-        promptCanvasCleanWater.SetActive(false);
-        promptCanvasDirtyWater.SetActive(false);
-        infoCanvas.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,12 +38,12 @@ public class WellInteraction : MonoBehaviour
         if (other.CompareTag("Player") && isWaterDirty == true)
         {
             isPlayerNearby = true;
-            promptCanvasDirtyWater.SetActive(false);
+            promptCanvasDirtyWater.SetActive(true);
         }
         else if(other.CompareTag("Player") && isWaterDirty == false)
         {
             isPlayerNearby = true;
-            promptCanvasCleanWater.SetActive(false);
+            promptCanvasCleanWater.SetActive(true);
         }
     }
 
@@ -65,6 +57,7 @@ public class WellInteraction : MonoBehaviour
             infoCanvas.SetActive(false);
             promptCanvasDirtyWater.SetActive(false);
             promptCanvasCleanWater.SetActive(false);
+            warningCanvas.SetActive(false);
 
         }
     }
