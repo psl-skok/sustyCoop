@@ -7,6 +7,7 @@ public class WellInteraction : MonoBehaviour
     public GameObject promptCanvasDirtyWater;
     public GameObject infoCanvas;
     public GameObject warningCanvas;
+    public GameObject dirtyCover;
     private bool isPlayerNearby = false;
     private bool isWaterDirty = true;
 
@@ -24,10 +25,12 @@ public class WellInteraction : MonoBehaviour
         // Check if the player is nearby and presses the interact key (e.g., "E")
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && isWaterDirty == false)
         {
+            promptCanvasCleanWater.SetActive(false);
             infoCanvas.SetActive(true);
         }
         else if (isPlayerNearby && Input.GetKeyDown(KeyCode.E) && isWaterDirty == true)
         {
+            promptCanvasDirtyWater.SetActive(false);
             warningCanvas.SetActive(true);
         }
     }
@@ -58,7 +61,13 @@ public class WellInteraction : MonoBehaviour
             promptCanvasDirtyWater.SetActive(false);
             promptCanvasCleanWater.SetActive(false);
             warningCanvas.SetActive(false);
-
         }
+    }
+
+    // Method to clean the well when all waste is collected
+    public void CleanWell()
+    {
+        isWaterDirty = false;
+        dirtyCover.SetActive(false);
     }
 }

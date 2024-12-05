@@ -441,6 +441,7 @@ GameObject:
   - component: {fileID: 3249129076530473220}
   - component: {fileID: 14613185537059080}
   - component: {fileID: -52930443637066176}
+  - component: {fileID: 6392216413984578289}
   m_Layer: 0
   m_Name: ChickenBrown
   m_TagString: Player
@@ -652,7 +653,28 @@ MonoBehaviour:
   compostBin2: {fileID: 0}
   wasteCollected: 0
   playerCamera: {fileID: 7402002466260435083}
-  successCanvas: {fileID: 3940943480162278553}
+  wellInteraction: {fileID: 0}
+--- !u!65 &6392216413984578289
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6614025276580504409}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.47488832, y: 0.71676344, z: 0.6100489}
+  m_Center: {x: 0.000000007450581, y: 0.36196527, z: 0.00050891936}
 --- !u!1 &9216195814972420898
 GameObject:
   m_ObjectHideFlags: 0

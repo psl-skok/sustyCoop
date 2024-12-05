@@ -10,6 +10,8 @@ TagManager:
   - Water
   - Flower
   - Soil
+  - Well
+  - WateringCan
   layers:
   - Default
   - TransparentFX
