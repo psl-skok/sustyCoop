@@ -8155,8 +8155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef2657bfd78b41d4a0290dabf7c1e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  promptCanvas: {fileID: 0}
-  infoCanvas: {fileID: 0}
+  promptCanvas: {fileID: 1186990828}
+  infoCanvas: {fileID: 957352197}
 --- !u!114 &434352563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28468,8 +28468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ef2657bfd78b41d4a0290dabf7c1e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  promptCanvas: {fileID: 0}
-  infoCanvas: {fileID: 0}
+  promptCanvas: {fileID: 1295771849}
+  infoCanvas: {fileID: 1078192556}
 --- !u!114 &1438304264
 MonoBehaviour:
   m_ObjectHideFlags: 0
