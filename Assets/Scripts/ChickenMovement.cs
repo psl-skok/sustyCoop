@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 [RequireComponent(typeof(CharacterController))]
 
-public class ChickenMovement : NetworkBehaviour
+public class ChickenMovement : MonoBehaviour, IPlayerMovement
 {
     public Camera playerCamera;
     public float walkSpeed = 6f;
@@ -13,12 +12,12 @@ public class ChickenMovement : NetworkBehaviour
     public float gravity = 10f;
     public float lookSpeed = 2f;
     public float lookXLimit = 45f;
-    public float defaultHeight = 1f;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
 
-    private bool canMove = true; // Set default value directly in the script
+    // Implementing the IPlayerMovement interface
+    public bool canMove { get; set; } = true;  // Default value can be true or false based on your logic
 
     void Start()
     {
@@ -27,21 +26,10 @@ public class ChickenMovement : NetworkBehaviour
         Cursor.visible = false;
     }
 
-    public override void OnNetworkSpawn()
-    {
-        // Only the owner should control this object and have the camera active
-        if (!IsOwner)
-        {
-            playerCamera.gameObject.SetActive(false);
-            enabled = false; // Disable this script for non-owner players
-            return;
-        }
-
-    }
-
     void Update()
     {
         if (!canMove) return;
+
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -65,7 +53,6 @@ public class ChickenMovement : NetworkBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
-        characterController.height = 1.5f;
 
         if (canMove)
         {
