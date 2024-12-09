@@ -11,12 +11,12 @@ public class RiverCleanup : MonoBehaviour
 
     void OnEnable()
     {
-        PlayerCollector.OnPlayerBucketCreated += AssignPlayerBucket;
+        PlayerCollector.OnPlayerCollectorCreated += AssignPlayerBucket;
     }
 
     void OnDisable()
     {
-        PlayerCollector.OnPlayerBucketCreated -= AssignPlayerBucket;
+        PlayerCollector.OnPlayerCollectorCreated -= AssignPlayerBucket;
     }
 
     void AssignPlayerBucket(PlayerCollector bucket)

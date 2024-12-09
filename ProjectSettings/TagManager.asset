@@ -12,6 +12,7 @@ TagManager:
   - Soil
   - Well
   - WateringCan
+  - WaterCanSpawn
   layers:
   - Default
   - TransparentFX

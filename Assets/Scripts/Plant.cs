@@ -19,7 +19,6 @@ public class Plant : MonoBehaviour
     // Call this method to water the plant
     public void WaterPlant()
     {
-        Debug.Log("Trying to water plant");
         if (!isBloomed)
         {
             isBloomed = true;
@@ -27,8 +26,6 @@ public class Plant : MonoBehaviour
                 unBloomedState.SetActive(false);
             if (bloomedState != null)
                 bloomedState.SetActive(true);
-
-            Debug.Log("The plant has bloomed!");
         }
     }
 }

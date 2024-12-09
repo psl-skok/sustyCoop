@@ -12,18 +12,21 @@ public class PlayerCollector : MonoBehaviour
     private bool isNearTrash = false;
     private bool isNearWell = false;
     private bool isNearPlant = false;
+    private bool isNearWaterCanSpawn = false;
+    private bool allFlowersWatered = false;
     public Camera playerCamera; 
     private GameObject successCanvas;
     private bool isCarryingObject = false;
     
     public WellInteraction wellInteraction; 
     private Plant currentPlant;
+    private WateringCan wateringCan;
 
-    public static event System.Action<PlayerCollector> OnPlayerBucketCreated;
+    public static event System.Action<PlayerCollector> OnPlayerCollectorCreated;
 
     void Awake()
     {
-        OnPlayerBucketCreated?.Invoke(this);
+        OnPlayerCollectorCreated?.Invoke(this);
     }
 
     void OnEnable()
@@ -85,6 +88,10 @@ public class PlayerCollector : MonoBehaviour
             isNearPlant = true;
             currentPlant = other.GetComponent<Plant>(); // Get the plant script reference
         }
+        else if (other.CompareTag("WaterCanSpawn"))
+        {
+            isNearWaterCanSpawn = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -105,6 +112,10 @@ public class PlayerCollector : MonoBehaviour
         {
             isNearPlant = false;
             currentPlant = null;
+        }
+        else if (other.CompareTag("WaterCanSpawn"))
+        {
+            isNearWaterCanSpawn = false;;
         }
     }
 
@@ -129,6 +140,10 @@ public class PlayerCollector : MonoBehaviour
         {
             PickUpObject();
         }
+        if(isNearWaterCanSpawn && Input.GetKeyDown(KeyCode.E) && currentObject.CompareTag("WateringCan") && allFlowersWatered == true){
+            Debug.Log("Attempting to return");
+            ReturnWaterCan();
+        }
 
         if (Input.GetKeyDown(KeyCode.E) && isNearTrash && currentObject != null && currentObject.CompareTag("Waste"))
         {
@@ -138,6 +153,11 @@ public class PlayerCollector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && isNearWell && currentObject != null && currentObject.CompareTag("WateringCan"))
         {
             FillWateringCan();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && currentObject != null && currentObject.CompareTag("WateringCan"))
+        {
+            PourCan();
         }
 
         if (isNearPlant && Input.GetKeyDown(KeyCode.E) && currentObject != null && currentObject.CompareTag("WateringCan"))
@@ -169,14 +189,12 @@ public class PlayerCollector : MonoBehaviour
         }
         else if (currentObject.CompareTag("WateringCan"))
         {
+            wateringCan = currentObject.GetComponent<WateringCan>();
             forwardPosition = playerCamera.transform.position + playerCamera.transform.forward * 0.5f + Vector3.down * 0.7f;
 
             // Set local rotation for watering can
             Quaternion targetRotation = Quaternion.Euler(50f, 0f, 0f); // Rotate by 20 degrees on X axis
             currentObject.transform.localRotation = targetRotation;
-
-            Debug.Log("Watering Can Rotation: " + currentObject.transform.localRotation.eulerAngles);
-
         }
         else
         {
@@ -207,17 +225,32 @@ public class PlayerCollector : MonoBehaviour
         if (canScript != null && !canScript.isFilled)
         {
             canScript.FillWithWater();
-            Debug.Log("Watering can filled with water!");
         }
     }
 
     void WaterPlant()
     {
-        Debug.Log("WaterPlant method called");
+        int numWateredPlants = 0;
         if (currentPlant != null)
         {
             currentPlant.WaterPlant(); // Call WaterPlant method to bloom the plant
+            numWateredPlants++;
         }
+        if(numWateredPlants == 1){
+            allFlowersWatered = true;
+            Debug.Log(allFlowersWatered);
+        }
+    }
+
+    void PourCan()
+    {
+        wateringCan.PourCan(); // Call PourCan method to trigger animation
+    }
+
+    void ReturnWaterCan()
+    {
+        currentObject.SetActive(false);
+
     }
 
     IEnumerator HideSuccessMessageAfterTime()

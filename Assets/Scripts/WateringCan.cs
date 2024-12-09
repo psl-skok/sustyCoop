@@ -3,6 +3,7 @@ using UnityEngine;
 public class WateringCan : MonoBehaviour
 {
     public GameObject waterPlane; // Reference to the water plane
+    public GameObject wateringCan;
     public bool isFilled = false; // Tracks if the can is filled
 
     void Start()
@@ -46,6 +47,15 @@ public class WateringCan : MonoBehaviour
         if (waterPlane != null)
         {
             waterPlane.SetActive(false); // Hide the water plane
+        }
+    }
+
+    public void PourCan()
+    {
+        Animator bucketAnimator = wateringCan.GetComponent<Animator>();
+        if (bucketAnimator != null)
+        {
+            bucketAnimator.SetTrigger("Pour"); // Trigger the pour animation
         }
     }
 }

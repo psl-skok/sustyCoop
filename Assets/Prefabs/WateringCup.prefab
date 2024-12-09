@@ -115,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 397832060406052574}
   - component: {fileID: 7796326840414737301}
+  - component: {fileID: 2465401349225266337}
   m_Layer: 0
   m_Name: WateringCup
   m_TagString: WateringCan
@@ -151,9 +152,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52f11babc181448678eafed63e252794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waterPlane: {fileID: 0}
   isFilled: 0
-  emptyMaterial: {fileID: 0}
-  filledMaterial: {fileID: 0}
+--- !u!95 &2465401349225266337
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4371869485281754378}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4c97aa47231f4aa38b664283a02c607, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6895586149647899191
 PrefabInstance:
   m_ObjectHideFlags: 0
