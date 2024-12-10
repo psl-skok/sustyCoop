@@ -1,4 +1,5 @@
 using UnityEngine;
+using System; // For Action delegate
 
 public class WagonStorage : MonoBehaviour
 {
@@ -12,84 +13,72 @@ public class WagonStorage : MonoBehaviour
     public float wagonRange = 5f; // Distance within which the wagon must be for item pickup
     public float generatorRange = 5f; // Distance within which the generator must be for item removal
     public GameObject wagon; // Reference to the wagon object
+    public bool generatorBoolean = false;
 
     private ScrollSpeed waterwheelAnimation; // Reference to the ScrollSpeed script on the waterwheel
 
+    // Event to notify generator state change
+    public Action<bool> OnGeneratorStateChanged;
+
     void Start()
     {
-        // Get the ScrollSpeed component from the waterwheel
         waterwheelAnimation = waterwheel.GetComponent<ScrollSpeed>();
         if (waterwheelAnimation == null)
         {
             Debug.LogError("ScrollSpeed component not found on the waterwheel.");
         }
-        else
-        {
-            Debug.Log("ScrollSpeed component successfully linked to the waterwheel.");
-        }
     }
 
     void Update()
     {
-        // Detect when the "Q" key is pressed
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (isHoldingItem)
             {
                 if (IsWagonAndGeneratorInRange())
                 {
-                    Debug.Log("Wagon and generator are both in range. Dropping the item into the generator.");
-                    DropItemIntoGenerator(); // Directly drop the item into the generator
+                    DropItemIntoGenerator();
                 }
                 else if (IsInWagonCollider())
                 {
-                    Debug.Log("Chicken is in wagon's collider. Placing the item in the wagon.");
-                    PlaceItemInWagon(); // Place the item in the wagon if in range
+                    PlaceItemInWagon();
                 }
                 else
                 {
-                    Debug.Log("Dropping the item on the ground.");
-                    DropItem(); // Drop the item otherwise
+                    DropItem();
                 }
             }
             else
             {
                 if (IsGeneratorInRange())
                 {
-                    Debug.Log("Chicken is in range of the generator. Attempting to take an item from the wagon.");
-                    TryTakeItemFromWagon(); // Try to take an item from the wagon
+                    TryTakeItemFromWagon();
                 }
                 else
                 {
-                    Debug.Log("Attempting to pick up an item.");
-                    TryPickUpItem(); // Attempt to pick up an item
+                    TryPickUpItem();
                 }
             }
         }
 
-        // Automatically drop the item if it is taken out of range
         if (isHoldingItem && !IsWagonInRange())
         {
-            Debug.Log("Chicken moved out of range of the wagon. Dropping the item automatically.");
             DropItem();
         }
     }
 
     private void TryPickUpItem()
     {
-        // Check if the wagon is within range
         if (!IsWagonInRange())
         {
             Debug.Log("Wagon is not in range. Cannot pick up item.");
             return;
         }
 
-        // Find all nearby colliders within the pickup range
         Collider[] colliders = Physics.OverlapSphere(transform.position, pickupRange);
 
         foreach (Collider collider in colliders)
         {
-            // Check if the collider belongs to an item (by tag)
             if (collider.CompareTag("Item"))
             {
                 currentItem = collider.gameObject;
@@ -149,10 +138,9 @@ public class WagonStorage : MonoBehaviour
     {
         isHoldingItem = true;
 
-        // Attach the item to the chicken's hold position
         item.transform.position = holdPosition.position;
         item.transform.rotation = holdPosition.rotation;
-        item.transform.SetParent(holdPosition); // Make the item a child of the hold position
+        item.transform.SetParent(holdPosition);
         Debug.Log($"Picked up item: {item.name}");
     }
 
@@ -162,15 +150,13 @@ public class WagonStorage : MonoBehaviour
         {
             isHoldingItem = false;
 
-            // Detach the item from the chicken
             currentItem.transform.SetParent(null);
 
-            // Place the item slightly in front of the chicken
             Vector3 dropPosition = transform.position + transform.forward;
             currentItem.transform.position = dropPosition;
 
             Debug.Log($"Dropped item: {currentItem.name} on the ground.");
-            currentItem = null; // Clear the reference to the held item
+            currentItem = null;
         }
     }
 
@@ -179,15 +165,16 @@ public class WagonStorage : MonoBehaviour
         if (currentItem != null)
         {
             Debug.Log($"Dropped item: {currentItem.name} into the generator.");
-            Destroy(currentItem); // Make the item disappear
-            currentItem = null; // Clear the reference
-            isHoldingItem = false; // Update holding state
+            Destroy(currentItem);
+            currentItem = null;
+            isHoldingItem = false;
 
-            // Activate the waterwheel animation
             if (waterwheelAnimation != null)
             {
                 waterwheelAnimation.isActive = true;
-                Debug.Log("Waterwheel animation activated.");
+                generatorBoolean = true;
+                Debug.Log("Generator activated. Notifying listeners.");
+                OnGeneratorStateChanged?.Invoke(generatorBoolean);
             }
         }
     }
@@ -199,14 +186,11 @@ public class WagonStorage : MonoBehaviour
             Debug.Log($"Placing item: {currentItem.name} in the wagon.");
             isHoldingItem = false;
 
-            // Place the item at the wagon's storage point
             currentItem.transform.position = wagonStoragePoint.position;
             currentItem.transform.rotation = wagonStoragePoint.rotation;
-
-            // Make the item a child of the wagon's storage point
             currentItem.transform.SetParent(wagonStoragePoint);
 
-            currentItem = null; // Clear the reference to the held item
+            currentItem = null;
         }
     }
 
@@ -214,7 +198,6 @@ public class WagonStorage : MonoBehaviour
     {
         if (wagonStoragePoint.childCount > 0)
         {
-            // Take the first child from the wagon storage point
             currentItem = wagonStoragePoint.GetChild(0).gameObject;
 
             Debug.Log($"Taking item: {currentItem.name} from the wagon.");
@@ -228,7 +211,6 @@ public class WagonStorage : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if the chicken collides with the generator while holding an item
         if (collision.gameObject == generator.gameObject && isHoldingItem)
         {
             DropItemIntoGenerator();
@@ -237,7 +219,6 @@ public class WagonStorage : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // Visualize the pickup range, wagon range, and generator range in the editor
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, pickupRange);
 
