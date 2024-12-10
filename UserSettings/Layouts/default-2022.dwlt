@@ -45,6 +45,13 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: Hierarchy
   m_RootView: {fileID: 9}
+    x: 214
+    y: 66
+    width: 1245
+    height: 916
+  m_ShowMode: 4
+  m_Title: Inspector
+  m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
@@ -118,8 +125,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
-    width: 1405
-    height: 737
+    width: 1245
+    height: 866
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
@@ -224,8 +231,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1405
-    height: 787
+    width: 1245
+    height: 916
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
@@ -249,7 +256,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1405
+    width: 1245
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -270,8 +277,8 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 767
-    width: 1405
+    y: 896
+    width: 1245
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
@@ -548,8 +555,7 @@ MonoBehaviour:
   m_LastFolders:
   - Assets/Imported Assets/Nature Low-Poly Pack By TexTheMess/Terrain Textures
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: /Users/pskok21/Desktop/Me/Work/College/Davidson/(24'-25')Senior/Computer
-    Graphics/CSC361_VirtualReality/CSC361_VirtualReality
+  m_LastProjectPath: /Users/blakecraig/Documents/GitHub/CSC361_VirtualReality
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
@@ -1091,7 +1097,7 @@ MonoBehaviour:
   m_ValidateTrueMetals: 0
   m_DoValidateTrueMetals: 0
   m_SceneViewState:
-    m_AlwaysRefresh: 0
+    m_AlwaysRefresh: 1
     showFog: 1
     showSkybox: 1
     showFlares: 1
