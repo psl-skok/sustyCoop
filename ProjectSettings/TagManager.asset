@@ -13,6 +13,8 @@ TagManager:
   - Well
   - WateringCan
   - WaterCanSpawn
+  - Item
+  - Terrain
   layers:
   - Default
   - TransparentFX
