@@ -150,7 +150,7 @@ public class PlayerCollector : MonoBehaviour
 
     void Update()
     {
-        if (wasteCollected == 9)
+        if (wasteCollected == 1)
         {
             if (pigSuccessCanvas != null)
             {
@@ -276,10 +276,9 @@ public class PlayerCollector : MonoBehaviour
             currentPlant.WaterPlant(); // Call WaterPlant method to bloom the plant
             numWateredPlants++;
         }
-        if(numWateredPlants == 12){
+        if(numWateredPlants == 1){
             allFlowersWatered = true;
             flowerWinCanvas.SetActive(true);
-            Debug.Log(allFlowersWatered);
         }
     }
 

@@ -16375,6 +16375,7 @@ MonoBehaviour:
   compostBin1: {fileID: 0}
   compostBin2: {fileID: 0}
   wasteCollected: 0
+  pigSuccessCanvas: {fileID: 1185962017}
   wellInteraction: {fileID: 0}
   flowerWinCanvas: {fileID: 0}
 --- !u!64 &758055681
@@ -25956,7 +25957,7 @@ GameObject:
   - component: {fileID: 1185962020}
   - component: {fileID: 1185962019}
   m_Layer: 5
-  m_Name: SuccessCanvas
+  m_Name: pigSuccessCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34240,6 +34241,7 @@ MonoBehaviour:
   compostBin1: {fileID: 0}
   compostBin2: {fileID: 0}
   wasteCollected: 0
+  pigSuccessCanvas: {fileID: 1185962017}
   wellInteraction: {fileID: 0}
   flowerWinCanvas: {fileID: 0}
 --- !u!64 &1503398420
