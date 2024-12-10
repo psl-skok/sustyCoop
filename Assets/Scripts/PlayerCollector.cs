@@ -4,23 +4,33 @@ using System.Collections;
 
 public class PlayerCollector : MonoBehaviour
 {
+    //general Global Variables
+    private GameObject currentObject; // Currently carried object 
+    public Camera playerCamera; 
+    private bool isCarryingObject = false;
+
+    //Global Variables for PigPen
     public Transform compostBin1;
     public Transform compostBin2;
-    public int wasteCollected = 0;
-    private GameObject currentObject; // Currently carried object (waste or watering can)
+    public int wasteCollected = 0; 
     private bool isNearWaste = false;
     private bool isNearTrash = false;
+    private GameObject successCanvas;
+    public WellInteraction wellInteraction; 
+    private Plant currentPlant;
+    private WateringCan wateringCan;
+
+    //Global Variables for Garden
     private bool isNearWell = false;
     private bool isNearPlant = false;
     private bool isNearWaterCanSpawn = false;
     private bool allFlowersWatered = false;
-    public Camera playerCamera; 
-    private GameObject successCanvas;
-    private bool isCarryingObject = false;
-    
-    public WellInteraction wellInteraction; 
-    private Plant currentPlant;
-    private WateringCan wateringCan;
+    public GameObject flowerWinCanvas;
+
+    //Global Variables for WaterTower
+    private bool isNearValve = false;
+    private bool isNearValveSlot = false;
+    private Valve valve;
 
     public static event System.Action<PlayerCollector> OnPlayerCollectorCreated;
 
@@ -32,9 +42,11 @@ public class PlayerCollector : MonoBehaviour
     void OnEnable()
     {
         successCanvas = GameObject.Find("SuccessCanvas");
-        if (successCanvas != null)
+        flowerWinCanvas = GameObject.Find("FlowerWinCanvas");
+        if (successCanvas != null && flowerWinCanvas != null)
         {
             successCanvas.SetActive(false); // Hide the success canvas initially
+            flowerWinCanvas.SetActive(false);
         }
         else
         {
@@ -76,7 +88,7 @@ public class PlayerCollector : MonoBehaviour
         }
         else if (other.CompareTag("WateringCan"))
         {
-            isNearWaste = true; // Treat watering can like waste for now
+            isNearWaste = true; 
             currentObject = other.gameObject;
         }
         else if (other.CompareTag("Well"))
@@ -91,6 +103,15 @@ public class PlayerCollector : MonoBehaviour
         else if (other.CompareTag("WaterCanSpawn"))
         {
             isNearWaterCanSpawn = true;
+        }
+        else if (other.CompareTag("Valve"))
+        {
+            isNearValve = true;
+            currentObject = other.gameObject;
+        }
+        else if (other.CompareTag("ValveSlot"))
+        {
+            isNearValveSlot = true;
         }
     }
 
@@ -117,11 +138,19 @@ public class PlayerCollector : MonoBehaviour
         {
             isNearWaterCanSpawn = false;;
         }
+        else if (other.CompareTag("Valve"))
+        {
+            isNearValve = false;
+        }
+        else if (other.CompareTag("ValveSlot"))
+        {
+            isNearValveSlot = false;
+        }
     }
 
     void Update()
     {
-        if (wasteCollected == 1)
+        if (wasteCollected == 9)
         {
             if (successCanvas != null)
             {
@@ -133,10 +162,8 @@ public class PlayerCollector : MonoBehaviour
                 wellInteraction.CleanWell(); // Change well to cleaned state
             }
 
-            StartCoroutine(HideSuccessMessageAfterTime());
         }
-
-        if (isNearWaste && Input.GetKeyDown(KeyCode.E) && !isCarryingObject)
+        if ((isNearWaste || isNearValve) && Input.GetKeyDown(KeyCode.E) && !isCarryingObject)
         {
             PickUpObject();
         }
@@ -167,6 +194,11 @@ public class PlayerCollector : MonoBehaviour
                 WaterPlant();
             }
         }
+
+        if (isNearValveSlot && Input.GetKeyDown(KeyCode.E) && currentObject != null && currentObject.CompareTag("Valve"))
+        {
+            InsertValve();
+        }
     }
 
     void PickUpObject()
@@ -185,7 +217,8 @@ public class PlayerCollector : MonoBehaviour
         // Adjust the position based on the object's tag
         if (currentObject.CompareTag("Waste"))
         {
-            forwardPosition = playerCamera.transform.position + playerCamera.transform.forward * 1.0f + Vector3.up * 0.5f;
+            forwardPosition = playerCamera.transform.position + playerCamera.transform.forward * 1.0f + Vector3.up * 0.2f;
+            isNearWaste = false;
         }
         else if (currentObject.CompareTag("WateringCan"))
         {
@@ -195,6 +228,12 @@ public class PlayerCollector : MonoBehaviour
             // Set local rotation for watering can
             Quaternion targetRotation = Quaternion.Euler(50f, 0f, 0f); // Rotate by 20 degrees on X axis
             currentObject.transform.localRotation = targetRotation;
+        }
+        else if (currentObject.CompareTag("Valve"))
+        {
+            valve = currentObject.GetComponent<Valve>();
+            forwardPosition = playerCamera.transform.position + playerCamera.transform.forward * 1.0f + Vector3.up * 0.1f;
+            isNearValve = false;
         }
         else
         {
@@ -209,6 +248,7 @@ public class PlayerCollector : MonoBehaviour
         // Reset interaction flags
         isNearWaste = false;
         isNearTrash = false;
+        isNearValve = false;
     }
 
     void DepositWaste()
@@ -236,8 +276,9 @@ public class PlayerCollector : MonoBehaviour
             currentPlant.WaterPlant(); // Call WaterPlant method to bloom the plant
             numWateredPlants++;
         }
-        if(numWateredPlants == 1){
+        if(numWateredPlants == 12){
             allFlowersWatered = true;
+            flowerWinCanvas.SetActive(true);
             Debug.Log(allFlowersWatered);
         }
     }
@@ -253,12 +294,13 @@ public class PlayerCollector : MonoBehaviour
 
     }
 
-    IEnumerator HideSuccessMessageAfterTime()
+    void InsertValve()
     {
-        yield return new WaitForSeconds(5f); // Adjust duration as needed
-        if (successCanvas != null)
+        if (valve != null)
         {
-            successCanvas.SetActive(false);
+            valve.InsertValve();
+            isCarryingObject = false; // Player is no longer carrying the valve
+            currentObject = null;
         }
     }
 }

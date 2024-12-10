@@ -13,6 +13,8 @@ TagManager:
   - Well
   - WateringCan
   - WaterCanSpawn
+  - Valve
+  - ValveSlot
   layers:
   - Default
   - TransparentFX
