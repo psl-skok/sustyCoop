@@ -15,7 +15,7 @@ public class PlayerCollector : MonoBehaviour
     public int wasteCollected = 0; 
     private bool isNearWaste = false;
     private bool isNearTrash = false;
-    private GameObject successCanvas;
+    public GameObject pigSuccessCanvas;
     public WellInteraction wellInteraction; 
     private Plant currentPlant;
     private WateringCan wateringCan;
@@ -41,11 +41,11 @@ public class PlayerCollector : MonoBehaviour
 
     void OnEnable()
     {
-        successCanvas = GameObject.Find("SuccessCanvas");
+        pigSuccessCanvas = GameObject.Find("PigSuccessCanvas");
         flowerWinCanvas = GameObject.Find("FlowerWinCanvas");
-        if (successCanvas != null && flowerWinCanvas != null)
+        if (pigSuccessCanvas != null && flowerWinCanvas != null)
         {
-            successCanvas.SetActive(false); // Hide the success canvas initially
+            pigSuccessCanvas.SetActive(false); // Hide the success canvas initially
             flowerWinCanvas.SetActive(false);
         }
         else
@@ -152,9 +152,9 @@ public class PlayerCollector : MonoBehaviour
     {
         if (wasteCollected == 9)
         {
-            if (successCanvas != null)
+            if (pigSuccessCanvas != null)
             {
-                successCanvas.SetActive(true);
+                pigSuccessCanvas.SetActive(true);
             }
             
             if (wellInteraction != null)

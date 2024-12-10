@@ -16371,11 +16371,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92792d03340034ac7948ccde0515fe84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 830316820}
   compostBin1: {fileID: 0}
   compostBin2: {fileID: 0}
   wasteCollected: 0
-  playerCamera: {fileID: 830316820}
   wellInteraction: {fileID: 0}
+  flowerWinCanvas: {fileID: 0}
 --- !u!64 &758055681
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23424,6 +23425,7 @@ Transform:
   - {fileID: 1787815095}
   - {fileID: 1260956504}
   - {fileID: 617563608}
+  - {fileID: 725106702}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093866148
@@ -33789,7 +33791,7 @@ Transform:
   m_GameObject: {fileID: 1500566241}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.109686, y: -3, z: -14.8818865}
+  m_LocalPosition: {x: 29.109686, y: -0.05, z: -14.8818865}
   m_LocalScale: {x: 8, y: 1, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34234,11 +34236,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92792d03340034ac7948ccde0515fe84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 863802833}
   compostBin1: {fileID: 0}
   compostBin2: {fileID: 0}
   wasteCollected: 0
-  playerCamera: {fileID: 863802833}
   wellInteraction: {fileID: 0}
+  flowerWinCanvas: {fileID: 0}
 --- !u!64 &1503398420
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45867,3 +45870,10 @@ SceneRoots:
   - {fileID: 1090392931}
   - {fileID: 449188081}
   - {fileID: 1195147031}
+  - {fileID: 1445989522}
+  - {fileID: 192635451}
+  - {fileID: 657864391}
+  - {fileID: 812781734}
+  - {fileID: 1518494688}
+  - {fileID: 1185784449}
+  - {fileID: 1779686018}
