@@ -20,6 +20,7 @@ public class AN_Button : MonoBehaviour
     [SerializeField] private Transform playerTransform; // Reference to the player
     [SerializeField] private float interactionRange = 5f; // Distance within which the player can interact with the button
     [SerializeField] private GameObject farmer; // Reference to the farmer character
+    [SerializeField] private GameObject fireworksCelebrationText; // Reference to the text to press the button
 
     void Start()
     {
@@ -188,6 +189,7 @@ public class AN_Button : MonoBehaviour
         if (fireworksScript != null)
         {
             fireworksScript.StartFireworks();
+            fireworksCelebrationText.SetActive(false);
         }
 
         foreach (GameObject firework in fireworksObjects)
