@@ -17,6 +17,9 @@ public class WagonStorage : MonoBehaviour
 
     private ScrollSpeed waterwheelAnimation; // Reference to the ScrollSpeed script on the waterwheel
 
+    [SerializeField] private GameObject itemInRangeCanvas; // Canvas to display when the chicken is near an item
+    [SerializeField] private EngineerInteraction engineerInteraction; // Reference to the EngineerInteraction script
+
     // Event to notify generator state change
     public Action<bool> OnGeneratorStateChanged;
 
@@ -26,6 +29,16 @@ public class WagonStorage : MonoBehaviour
         if (waterwheelAnimation == null)
         {
             Debug.LogError("ScrollSpeed component not found on the waterwheel.");
+        }
+
+        // Ensure the canvas is hidden initially
+        if (itemInRangeCanvas != null)
+        {
+            itemInRangeCanvas.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("ItemInRangeCanvas reference is not assigned in the Inspector.");
         }
     }
 
@@ -65,10 +78,54 @@ public class WagonStorage : MonoBehaviour
         {
             DropItem();
         }
+
+        HandleItemInRangeCanvas(); // Check and handle canvas visibility
+    }
+
+    private void HandleItemInRangeCanvas()
+    {
+        // Check if the player has completed all engineer interactions
+        bool hasCompletedInteractions = engineerInteraction != null && engineerInteraction.HasCompletedAllInteractions();
+
+        if (!hasCompletedInteractions)
+        {
+            // Hide the canvas if interactions are incomplete
+            if (itemInRangeCanvas != null)
+            {
+                itemInRangeCanvas.SetActive(false);
+            }
+            return;
+        }
+
+        // Check if an item is within range
+        bool isItemInRange = false;
+        Collider[] colliders = Physics.OverlapSphere(transform.position, pickupRange);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Item"))
+            {
+                isItemInRange = true;
+                break;
+            }
+        }
+
+        // Toggle the canvas based on proximity to an item
+        if (itemInRangeCanvas != null)
+        {
+            itemInRangeCanvas.SetActive(isItemInRange);
+        }
     }
 
     private void TryPickUpItem()
     {
+        // Check if the player has completed all interactions with the engineer
+        if (engineerInteraction != null && !engineerInteraction.HasCompletedAllInteractions())
+        {
+            Debug.Log("You must complete the engineer interaction before picking up items.");
+            return;
+        }
+
         if (!IsWagonInRange())
         {
             Debug.Log("Wagon is not in range. Cannot pick up item.");

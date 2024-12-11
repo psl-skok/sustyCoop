@@ -15,22 +15,24 @@ public class PlayerCollector : MonoBehaviour
     public int wasteCollected = 0; 
     private bool isNearWaste = false;
     private bool isNearTrash = false;
-    public GameObject pigSuccessCanvas;
-    public WellInteraction wellInteraction; 
-    private Plant currentPlant;
-    private WateringCan wateringCan;
+    [SerializeField] private GameObject pigSuccessCanvas;
 
     //Global Variables for Garden
     private bool isNearWell = false;
     private bool isNearPlant = false;
     private bool isNearWaterCanSpawn = false;
     private bool allFlowersWatered = false;
-    public GameObject flowerWinCanvas;
+    [SerializeField] private GameObject flowerWinCanvas;
+    public WellInteraction wellInteraction; 
+    private Plant currentPlant;
+    private WateringCan wateringCan;
 
     //Global Variables for WaterTower
     private bool isNearValve = false;
     private bool isNearValveSlot = false;
     private Valve valve;
+
+
 
     public static event System.Action<PlayerCollector> OnPlayerCollectorCreated;
 
@@ -41,18 +43,17 @@ public class PlayerCollector : MonoBehaviour
 
     void OnEnable()
     {
-        pigSuccessCanvas = GameObject.Find("PigSuccessCanvas");
-        flowerWinCanvas = GameObject.Find("FlowerWinCanvas");
         if (pigSuccessCanvas != null && flowerWinCanvas != null)
         {
-            pigSuccessCanvas.SetActive(false); // Hide the success canvas initially
+            pigSuccessCanvas.SetActive(false);
             flowerWinCanvas.SetActive(false);
         }
         else
         {
-            Debug.LogError("SuccessCanvas not found in the scene.");
+            Debug.LogError("Canvas references are not assigned in the Inspector.");
         }
     }
+
 
     void Start()
     {

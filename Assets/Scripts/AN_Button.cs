@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections; // For IEnumerator
+using System.Collections;
 
 public class AN_Button : MonoBehaviour
 {
@@ -15,6 +15,11 @@ public class AN_Button : MonoBehaviour
     public float fadeDuration = 2f; // Duration of the fade between skyboxes
 
     private Light sunLight; // Reference to the Directional Light (sun)
+
+    [SerializeField] private GameObject wagonWheelSuccessCanvas; // Reference to the wagon wheel success canvas
+    [SerializeField] private Transform playerTransform; // Reference to the player
+    [SerializeField] private float interactionRange = 5f; // Distance within which the player can interact with the button
+    [SerializeField] private GameObject farmer; // Reference to the farmer character
 
     void Start()
     {
@@ -59,6 +64,26 @@ public class AN_Button : MonoBehaviour
         {
             Debug.LogError("Directional Light not found or does not have a Light component.");
         }
+
+        // Hide the success canvas initially
+        if (wagonWheelSuccessCanvas != null)
+        {
+            wagonWheelSuccessCanvas.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("WagonWheelSuccessCanvas reference is not assigned in the Inspector.");
+        }
+
+        // Hide the farmer initially
+        if (farmer != null)
+        {
+            farmer.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Farmer reference is not assigned in the Inspector.");
+        }
     }
 
     void OnDestroy()
@@ -71,10 +96,22 @@ public class AN_Button : MonoBehaviour
 
     void Update()
     {
-        if (gameObject.activeSelf && Input.GetKeyDown(buttonKey))
+        if (IsPlayerInRange() && Input.GetKeyDown(buttonKey))
         {
             ToggleFireworks();
         }
+    }
+
+    private bool IsPlayerInRange()
+    {
+        if (playerTransform == null)
+        {
+            Debug.LogError("Player Transform is not assigned.");
+            return false;
+        }
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+        return distance <= interactionRange;
     }
 
     private void HandleGeneratorStateChanged(bool isActive)
@@ -82,7 +119,31 @@ public class AN_Button : MonoBehaviour
         gameObject.SetActive(isActive); // Show or hide the button based on generator state
         if (isActive)
         {
-            Debug.Log("Button is now visible because the generator is active.");
+            Debug.Log("Generator is active. Showing success canvas and farmer.");
+            if (wagonWheelSuccessCanvas != null)
+            {
+                wagonWheelSuccessCanvas.SetActive(true); // Show the success canvas when the generator is active
+            }
+
+            // Show the farmer
+            if (farmer != null)
+            {
+                farmer.SetActive(true);
+            }
+        }
+        else
+        {
+            Debug.Log("Generator is inactive. Hiding success canvas and farmer.");
+            if (wagonWheelSuccessCanvas != null)
+            {
+                wagonWheelSuccessCanvas.SetActive(false); // Hide the success canvas when the generator is inactive
+            }
+
+            // Hide the farmer
+            if (farmer != null)
+            {
+                farmer.SetActive(false);
+            }
         }
     }
 
@@ -216,5 +277,4 @@ public class AN_Button : MonoBehaviour
 
         DynamicGI.UpdateEnvironment(); // Update the lighting
     }
-
 }
