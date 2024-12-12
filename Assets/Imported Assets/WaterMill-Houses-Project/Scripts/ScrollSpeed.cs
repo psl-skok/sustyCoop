@@ -5,6 +5,8 @@ public class ScrollSpeed : MonoBehaviour
     public float speed;
     public bool isActive = false; // Flag to control when the animation starts
 
+    public AudioSource audioSource;
+
     void Update()
     {
         if (isActive && !GetComponent<Animation>().isPlaying)
@@ -13,6 +15,15 @@ public class ScrollSpeed : MonoBehaviour
             GetComponent<Animation>()["Run"].speed = speed;
             GetComponent<Animation>().Play("Run");
             Debug.Log("Generator animation started.");
+
+            PlaySound();
+        }
+    }
+    void PlaySound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play(); //Plays audio sound
         }
     }
 }

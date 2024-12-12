@@ -22,6 +22,8 @@ public class AN_Button : MonoBehaviour
     [SerializeField] private GameObject farmer; // Reference to the farmer character
     [SerializeField] private GameObject fireworksCelebrationText; // Reference to the text to press the button
 
+    public AudioSource audioSource;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -190,6 +192,7 @@ public class AN_Button : MonoBehaviour
         {
             fireworksScript.StartFireworks();
             fireworksCelebrationText.SetActive(false);
+            PlaySound();
         }
 
         foreach (GameObject firework in fireworksObjects)
@@ -278,5 +281,13 @@ public class AN_Button : MonoBehaviour
         }
 
         DynamicGI.UpdateEnvironment(); // Update the lighting
+    }
+
+    void PlaySound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play(); //Plays audio sound
+        }
     }
 }

@@ -4,6 +4,7 @@ public class FarmerInteraction : MonoBehaviour
 {
     public GameObject promptCanvas; // Assign the panel GameObject in the Inspector
     private bool isPlayerNearby = false;
+    public AudioSource audioSource;
     void Start()
     {
         // Ensure the text panel is hidden initially
@@ -22,6 +23,7 @@ public class FarmerInteraction : MonoBehaviour
             isPlayerNearby = true;
             // Optionally display a hint like "Press E to interact"
             TogglePromptCanvas();
+            PlaySound();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -31,6 +33,14 @@ public class FarmerInteraction : MonoBehaviour
         {
             isPlayerNearby = false;
             promptCanvas.SetActive(false);
+        }
+    }
+
+    void PlaySound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play(); //Plays audio sound
         }
     }
 }

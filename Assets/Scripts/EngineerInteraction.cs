@@ -11,6 +11,7 @@ public class EngineerInteraction : MonoBehaviour
     private bool isInfoCanvas2Active = false;
     private bool isInfoCanvas3Active = false;
     private bool hasCompletedAllInteractions = false; // Flag to track if all messages have been shown
+    public AudioSource audioSource;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class EngineerInteraction : MonoBehaviour
             if (!hasCompletedAllInteractions)
             {
                 HandleCanvasInteractions();
+                PlaySound();
             }
         }
     }
@@ -103,5 +105,13 @@ public class EngineerInteraction : MonoBehaviour
     public bool HasCompletedAllInteractions()
     {
         return hasCompletedAllInteractions;
+    }
+
+    void PlaySound()
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play(); //Plays audio sound
+        }
     }
 }
