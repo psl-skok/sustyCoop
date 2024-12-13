@@ -18,6 +18,7 @@ public class WagonStorage : MonoBehaviour
     private ScrollSpeed waterwheelAnimation; // Reference to the ScrollSpeed script on the waterwheel
 
     [SerializeField] private GameObject itemInRangeCanvas; // Canvas to display when the chicken is near an item
+    [SerializeField] private GameObject itemInRangeGeneratorCanvas; // Canvas for generator proximity
     [SerializeField] private EngineerInteraction engineerInteraction; // Reference to the EngineerInteraction script
 
     // Event to notify generator state change
@@ -32,13 +33,14 @@ public class WagonStorage : MonoBehaviour
         }
 
         // Ensure the canvas is hidden initially
-        if (itemInRangeCanvas != null)
+        if (itemInRangeCanvas != null && itemInRangeGeneratorCanvas != null)
         {
             itemInRangeCanvas.SetActive(false);
+            itemInRangeGeneratorCanvas.SetActive(false);
         }
         else
         {
-            Debug.LogError("ItemInRangeCanvas reference is not assigned in the Inspector.");
+            Debug.LogError("ItemInRangeCanvas references are not assigned in the Inspector.");
         }
     }
 
@@ -80,16 +82,15 @@ public class WagonStorage : MonoBehaviour
         }
 
         HandleItemInRangeCanvas(); // Check and handle canvas visibility
+        HandleItemInRangeGeneratorCanvas();
     }
 
     private void HandleItemInRangeCanvas()
     {
-        // Check if the player has completed all engineer interactions
         bool hasCompletedInteractions = engineerInteraction != null && engineerInteraction.HasCompletedAllInteractions();
 
         if (!hasCompletedInteractions)
         {
-            // Hide the canvas if interactions are incomplete
             if (itemInRangeCanvas != null)
             {
                 itemInRangeCanvas.SetActive(false);
@@ -97,7 +98,6 @@ public class WagonStorage : MonoBehaviour
             return;
         }
 
-        // Check if an item is within range
         bool isItemInRange = false;
         Collider[] colliders = Physics.OverlapSphere(transform.position, pickupRange);
 
@@ -110,16 +110,46 @@ public class WagonStorage : MonoBehaviour
             }
         }
 
-        // Toggle the canvas based on proximity to an item
         if (itemInRangeCanvas != null)
         {
             itemInRangeCanvas.SetActive(isItemInRange);
         }
     }
 
+    private void HandleItemInRangeGeneratorCanvas()
+    {
+        bool hasCompletedInteractions = engineerInteraction != null && engineerInteraction.HasCompletedAllInteractions();
+
+        if (!hasCompletedInteractions)
+        {
+            if (itemInRangeGeneratorCanvas != null)
+            {
+                itemInRangeGeneratorCanvas.SetActive(false);
+            }
+            return;
+        }
+
+        Vector3 generatorWorldPosition = generator.position;
+        bool isItemInRange = false;
+        Collider[] colliders = Physics.OverlapSphere(generatorWorldPosition, generatorRange);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Item") || collider.CompareTag("Player"))
+            {
+                isItemInRange = true;
+                break;
+            }
+        }
+
+        if (itemInRangeGeneratorCanvas != null)
+        {
+            itemInRangeGeneratorCanvas.SetActive(isItemInRange);
+        }
+    }
+
     private void TryPickUpItem()
     {
-        // Check if the player has completed all interactions with the engineer
         if (engineerInteraction != null && !engineerInteraction.HasCompletedAllInteractions())
         {
             Debug.Log("You must complete the engineer interaction before picking up items.");
@@ -140,6 +170,11 @@ public class WagonStorage : MonoBehaviour
             {
                 currentItem = collider.gameObject;
                 PickUpItem(currentItem);
+
+                if (itemInRangeGeneratorCanvas != null)
+                {
+                    itemInRangeGeneratorCanvas.SetActive(false);
+                }
                 return;
             }
         }
@@ -194,7 +229,6 @@ public class WagonStorage : MonoBehaviour
     private void PickUpItem(GameObject item)
     {
         isHoldingItem = true;
-
         item.transform.position = holdPosition.position;
         item.transform.rotation = holdPosition.rotation;
         item.transform.SetParent(holdPosition);
@@ -206,12 +240,9 @@ public class WagonStorage : MonoBehaviour
         if (currentItem != null)
         {
             isHoldingItem = false;
-
             currentItem.transform.SetParent(null);
-
             Vector3 dropPosition = transform.position + transform.forward;
             currentItem.transform.position = dropPosition;
-
             Debug.Log($"Dropped item: {currentItem.name} on the ground.");
             currentItem = null;
         }
@@ -242,11 +273,9 @@ public class WagonStorage : MonoBehaviour
         {
             Debug.Log($"Placing item: {currentItem.name} in the wagon.");
             isHoldingItem = false;
-
             currentItem.transform.position = wagonStoragePoint.position;
             currentItem.transform.rotation = wagonStoragePoint.rotation;
             currentItem.transform.SetParent(wagonStoragePoint);
-
             currentItem = null;
         }
     }
@@ -256,7 +285,6 @@ public class WagonStorage : MonoBehaviour
         if (wagonStoragePoint.childCount > 0)
         {
             currentItem = wagonStoragePoint.GetChild(0).gameObject;
-
             Debug.Log($"Taking item: {currentItem.name} from the wagon.");
             PickUpItem(currentItem);
         }
