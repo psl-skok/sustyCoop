@@ -14,3 +14,4 @@ Unity Version: This project is built with Unity 2023.1 or later. Make sure to us
 
 <b>Information:</b>
 Attached you can find a PDF writeup of the final project. This writeup contains information about the development project and pictures from the game.
+[PDF documentation](Graphics_Essay.pdf)
